@@ -3,45 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vercel Deployment Error - 404: NOT_FOUND</title>
+    <title>Vercel 404: NOT_FOUND Error Resolver</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #0070f3;
+            --secondary: #7928ca;
+            --error: #e00;
+            --warning: #f5a623;
+            --success: #17c964;
+            --dark: #111;
+            --light: #f6f6f6;
+            --gray: #888;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #e6e6e6;
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: var(--light);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             line-height: 1.6;
+            padding: 20px;
         }
         
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
         }
         
         header {
-            background: #0f3460;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         .error-code {
             font-size: 5rem;
-            font-weight: bold;
-            color: #e94560;
+            font-weight: 800;
+            color: var(--error);
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             margin-bottom: 10px;
         }
@@ -49,25 +58,27 @@
         .error-message {
             font-size: 1.8rem;
             margin-bottom: 20px;
-            color: #f0f0f0;
+            color: var(--light);
         }
         
         .error-details {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
             margin: 20px 0;
-            border-left: 4px solid #e94560;
+            border-left: 4px solid var(--error);
         }
         
         .error-id {
             font-family: monospace;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 8px 12px;
-            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 6px;
             display: inline-block;
-            margin: 5px 0;
+            margin: 10px 0;
             color: #ff7e7e;
+            font-size: 0.9rem;
+            word-break: break-all;
         }
         
         .content {
@@ -85,16 +96,21 @@
         
         .card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            border-radius: 16px;
             padding: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .card h2 {
-            color: #e94560;
+            color: var(--primary);
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #e94560;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .causes-list, .solutions-list {
@@ -108,16 +124,16 @@
         }
         
         .causes-list li:before {
-            content: "✓";
-            color: #4ecdc4;
+            content: "✗";
+            color: var(--error);
             position: absolute;
             left: 0;
             font-weight: bold;
         }
         
         .solutions-list li:before {
-            content: "➤";
-            color: #e94560;
+            content: "✓";
+            color: var(--success);
             position: absolute;
             left: 0;
             font-weight: bold;
@@ -125,13 +141,15 @@
         
         .code-block {
             background: #1e1e2e;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
             overflow-x: auto;
-            font-family: monospace;
+            font-family: 'Fira Code', monospace;
             color: #f8f8f2;
-            border-left: 4px solid #4ecdc4;
+            border-left: 4px solid var(--primary);
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
         
         .command {
@@ -151,72 +169,128 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin: 30px 0;
+            justify-content: center;
         }
         
         .btn {
-            padding: 12px 25px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             transition: all 0.3s;
+            font-size: 1rem;
         }
         
         .btn-primary {
-            background: #e94560;
+            background: var(--primary);
         }
         
         .btn-primary:hover {
-            background: #ff577f;
+            background: #0059c5;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 112, 243, 0.3);
         }
         
         .btn-secondary {
-            background: #4ecdc4;
+            background: var(--secondary);
         }
         
         .btn-secondary:hover {
-            background: #81f5ff;
+            background: #6a1cb0;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(121, 40, 202, 0.3);
         }
         
         .btn-tertiary {
-            background: #0f3460;
+            background: var(--dark);
+            border: 1px solid var(--gray);
         }
         
         .btn-tertiary:hover {
-            background: #1a5fb4;
+            background: #222;
             transform: translateY(-2px);
         }
         
         footer {
             text-align: center;
             margin-top: 50px;
-            padding: 20px;
-            color: #a9a9a9;
+            padding: 30px;
+            color: var(--gray);
             font-size: 0.9rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
         }
         
         .vercel-logo {
             color: white;
             font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .support-link {
-            color: #4ecdc4;
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 500;
         }
         
         .support-link:hover {
             text-decoration: underline;
+        }
+        
+        .troubleshooter {
+            margin: 40px 0;
+        }
+        
+        .step {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .step:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .step-content {
+            margin-top: 15px;
+            display: none;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        
+        .step.active .step-content {
+            display: block;
+        }
+        
+        .icon {
+            transition: transform 0.3s;
+        }
+        
+        .step.active .icon {
+            transform: rotate(180deg);
         }
     </style>
 </head>
@@ -226,88 +300,110 @@
             <div class="error-code">404: NOT_FOUND</div>
             <div class="error-message">Code: <span class="important">NOT_FOUND</span></div>
             <div class="error-details">
-                <p>ID: <span class="error-id">bom1::t77sr-1757788425483-94299a3fb2a9</span></p>
-                <p>Read our documentation to learn more about this error.</p>
+                <p>ID: <span class="error-id">bom1::bzrnh-1757788875338-d47716e3df31</span></p>
+                <p>This error typically occurs when Vercel cannot find the deployment or the build output.</p>
             </div>
         </header>
         
         <div class="content">
             <div class="card">
-                <h2>Common Causes</h2>
+                <h2><i class="fas fa-exclamation-circle"></i> Common Causes</h2>
                 <ul class="causes-list">
-                    <li>Missing or incorrect <span class="important">vercel.json</span> configuration</li>
-                    <li>Incorrect build output directory specification</li>
+                    <li>Incorrect <span class="important">vercel.json</span> configuration</li>
+                    <li>Wrong build output directory specified</li>
                     <li>Missing routes or rewrites in configuration</li>
-                    <li>Incorrect project structure or missing files</li>
-                    <li>Build process not generating expected output</li>
-                    <li>Framework configuration issues (Next.js, React, etc.)</li>
+                    <li>Project structure doesn't match Vercel expectations</li>
+                    <li>Build process failed to generate expected output</li>
+                    <li>Framework configuration issues</li>
+                    <li>Missing required files for deployment</li>
                 </ul>
             </div>
             
             <div class="card">
-                <h2>Solutions</h2>
+                <h2><i class="fas fa-check-circle"></i> Solutions</h2>
                 <ul class="solutions-list">
-                    <li>Check your <span class="important">vercel.json</span> configuration</li>
-                    <li>Verify build output directory in project settings</li>
+                    <li>Verify your <span class="important">vercel.json</span> configuration</li>
+                    <li>Check build output directory in project settings</li>
                     <li>Add proper routes and rewrites for your application</li>
                     <li>Ensure all required files are included in deployment</li>
                     <li>Test build process locally before deploying</li>
                     <li>Check framework-specific documentation for Vercel</li>
+                    <li>Redeploy with correct configuration</li>
                 </ul>
             </div>
         </div>
         
-        <div class="card">
-            <h2>Configuration Examples</h2>
+        <div class="troubleshooter">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--primary);">
+                <i class="fas fa-tools"></i> Step-by-Step Troubleshooter
+            </h2>
             
-            <h3>vercel.json for React.js</h3>
-            <div class="code-block">
-                {<br>
-                &nbsp; "version": 2,<br>
-                &nbsp; "builds": [<br>
-                &nbsp; &nbsp; {<br>
-                &nbsp; &nbsp; &nbsp; "src": "package.json",<br>
-                &nbsp; &nbsp; &nbsp; "use": "@vercel/static-build",<br>
-                &nbsp; &nbsp; &nbsp; "config": {<br>
-                &nbsp; &nbsp; &nbsp; &nbsp; "distDir": "build"<br>
-                &nbsp; &nbsp; &nbsp; }<br>
-                &nbsp; &nbsp; }<br>
-                &nbsp; ],<br>
-                &nbsp; "routes": [<br>
-                &nbsp; &nbsp; {<br>
-                &nbsp; &nbsp; &nbsp; "handle": "filesystem"<br>
-                &nbsp; &nbsp; },<br>
-                &nbsp; &nbsp; {<br>
-                &nbsp; &nbsp; &nbsp; "src": "/(.*)",<br>
-                &nbsp; &nbsp; &nbsp; "dest": "/index.html"<br>
-                &nbsp; &nbsp; }<br>
-                &nbsp; ]<br>
-                }
+            <div class="step active">
+                <div class="step-header">
+                    <h3>1. Check vercel.json Configuration</h3>
+                    <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="step-content">
+                    <p>Ensure your <span class="important">vercel.json</span> file is correctly configured for your framework.</p>
+                    <div class="code-block">
+                        <span class="comment">// Example vercel.json for React.js</span><br>
+                        {<br>
+                        &nbsp; "version": 2,<br>
+                        &nbsp; "builds": [<br>
+                        &nbsp; &nbsp; {<br>
+                        &nbsp; &nbsp; &nbsp; "src": "package.json",<br>
+                        &nbsp; &nbsp; &nbsp; "use": "@vercel/static-build",<br>
+                        &nbsp; &nbsp; &nbsp; "config": {<br>
+                        &nbsp; &nbsp; &nbsp; &nbsp; "distDir": "build"<br>
+                        &nbsp; &nbsp; &nbsp; }<br>
+                        &nbsp; &nbsp; }<br>
+                        &nbsp; ],<br>
+                        &nbsp; "routes": [<br>
+                        &nbsp; &nbsp; {<br>
+                        &nbsp; &nbsp; &nbsp; "handle": "filesystem"<br>
+                        &nbsp; &nbsp; },<br>
+                        &nbsp; &nbsp; {<br>
+                        &nbsp; &nbsp; &nbsp; "src": "/(.*)",<br>
+                        &nbsp; &nbsp; &nbsp; "dest": "/index.html"<br>
+                        &nbsp; &nbsp; }<br>
+                        &nbsp; ]<br>
+                        }
+                    </div>
+                </div>
             </div>
             
-            <h3>vercel.json for Next.js</h3>
-            <div class="code-block">
-                {<br>
-                &nbsp; "version": 2,<br>
-                &nbsp; "builds": [<br>
-                &nbsp; &nbsp; {<br>
-                &nbsp; &nbsp; &nbsp; "src": "package.json",<br>
-                &nbsp; &nbsp; &nbsp; "use": "@vercel/next"<br>
-                &nbsp; &nbsp; }<br>
-                &nbsp; ]<br>
-                }
+            <div class="step">
+                <div class="step-header">
+                    <h3>2. Verify Build Output Directory</h3>
+                    <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="step-content">
+                    <p>Make sure your build output directory matches what's specified in your Vercel project settings.</p>
+                    <div class="code-block">
+                        <span class="comment"># Common build commands</span><br>
+                        <span class="command">npm run build</span> <span class="comment"># Creates build/ directory for React</span><br>
+                        <span class="command">npm run export</span> <span class="comment"># Creates out/ directory for Next.js</span><br>
+                        <span class="command">yarn build</span> <span class="comment"># Alternative using Yarn</span>
+                    </div>
+                </div>
             </div>
             
-            <h3>Common Build Commands</h3>
-            <div class="code-block">
-                <span class="comment"># Install dependencies</span><br>
-                <span class="command">npm install</span><br>
-                <br>
-                <span class="comment"># Build the project</span><br>
-                <span class="command">npm run build</span><br>
-                <br>
-                <span class="comment"># Start development server</span><br>
-                <span class="command">npm run dev</span>
+            <div class="step">
+                <div class="step-header">
+                    <h3>3. Check Deployment Logs</h3>
+                    <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="step-content">
+                    <p>Examine your deployment logs in the Vercel dashboard for any build errors or warnings.</p>
+                    <div class="code-block">
+                        <span class="comment"># You can check build logs locally with:</span><br>
+                        <span class="command">vercel logs [deployment-url]</span><br>
+                        <br>
+                        <span class="comment"># Or inspect previous deployments:</span><br>
+                        <span class="command">vercel list</span><br>
+                        <span class="command">vercel inspect [deployment-id]</span>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -316,24 +412,53 @@
             <a href="#" class="btn btn-secondary"><i class="fas fa-cog"></i> Project Settings</a>
             <a href="#" class="btn btn-tertiary"><i class="fas fa-redo"></i> Redeploy Project</a>
         </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-terminal"></i> Quick Fixes to Try</h2>
+            <div class="code-block">
+                <span class="comment"># Redeploy with Vercel CLI</span><br>
+                <span class="command">vercel --prod</span><br>
+                <br>
+                <span class="comment"># If using GitHub, try pushing an empty commit to trigger redeploy</span><br>
+                <span class="command">git commit --allow-empty -m "Trigger redeploy"</span><br>
+                <span class="command">git push</span><br>
+                <br>
+                <span class="comment"># Clear Vercel build cache (in project settings)</span>
+            </div>
+        </div>
     </div>
     
     <footer>
-        <div class="vercel-logo">VERCEL</div>
-        <p>Need more help? <a href="#" class="support-link">Contact Vercel Support</a></p>
-        <p>Error ID: bom1::t77sr-1757788425483-94299a3fb2a9</p>
+        <div class="vercel-logo">
+            <i class="fas fa-cloud"></i>
+            VERCEL DEPLOYMENT TROUBLESHOOTER
+        </div>
+        <p>Need more help? <a href="#" class="support-link">Contact Vercel Support</a> with your error ID</p>
+        <p>Error ID: <span class="error-id">bom1::bzrnh-1757788875338-d47716e3df31</span></p>
     </footer>
 
     <script>
-        // Simple functionality for demonstration
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    alert('This would navigate to the appropriate resource in a real implementation.');
-                });
+        // Toggle troubleshooting steps
+        document.querySelectorAll('.step').forEach(step => {
+            step.querySelector('.step-header').addEventListener('click', () => {
+                step.classList.toggle('active');
             });
+        });
+
+        // Simulate button actions
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const btnType = this.classList.contains('btn-primary') ? 'Documentation' : 
+                              this.classList.contains('btn-secondary') ? 'Settings' : 'Redeploy';
+                alert(`This would open Vercel ${btnType} in a real implementation.`);
+            });
+        });
+
+        // Simulate support link
+        document.querySelector('.support-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('This would open Vercel support with your error ID pre-filled.');
         });
     </script>
 </body>
