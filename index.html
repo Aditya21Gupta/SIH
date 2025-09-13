@@ -28,58 +28,73 @@
         
         #root {
             width: 100%;
-            max-width: 1200px;
-        }
-        
-        .container {
+            max-width: 500px;
+            height: 90vh;
+            overflow: hidden;
+            position: relative;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: #3e2b28;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+        }
+        
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #3e2b28;
+            background: #4d3629;
             color: #d9b596;
             padding: 15px 20px;
-            border-radius: 10px;
-            border: 1px solid #5d443f;
+            border-bottom: 1px solid #5d443f;
         }
         
         .time {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
         }
         
         .app-name {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #d9b596;
         }
         
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        .header-icon {
+            font-size: 1.5rem;
+            color: #d9b596;
+        }
+        
+        .view-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
         
         .card {
             background: #3e2b28;
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             border: 1px solid #5d443f;
+            margin-bottom: 20px;
         }
         
         .card-header {
-            background: #4d3629;
-            color: #d9b596;
+            background: #5d3c2a;
+            color: #e2a861;
             padding: 15px;
             text-align: center;
             font-size: 1.2rem;
@@ -92,11 +107,6 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-        }
-        
-        .alert-card .card-header {
-            background: #5d3c2a;
-            color: #e2a861;
         }
         
         .alert-content {
@@ -127,10 +137,10 @@
         }
         
         input {
-            padding: 12px;
+            padding: 15px;
             background: #4d3629;
             border: 1px solid #5d443f;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 1rem;
             color: #e0d6c8;
         }
@@ -149,16 +159,16 @@
         }
         
         .phone-prefix {
-            padding: 12px;
+            padding: 15px;
             background: #4d3629;
             border: 1px solid #5d443f;
             border-right: none;
-            border-radius: 5px 0 0 5px;
+            border-radius: 10px 0 0 10px;
             color: #d9b596;
         }
         
         .phone-input input {
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 10px 10px 0;
             flex-grow: 1;
         }
         
@@ -173,9 +183,9 @@
         }
         
         .btn {
-            padding: 12px;
+            padding: 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             color: white;
             font-weight: bold;
             cursor: pointer;
@@ -183,6 +193,8 @@
             letter-spacing: 1px;
             transition: all 0.3s;
             margin-top: 10px;
+            text-align: center;
+            font-size: 1.1rem;
         }
         
         .btn-primary {
@@ -222,17 +234,18 @@
             display: flex;
             margin-bottom: 15px;
             background: #4d3629;
-            border-radius: 5px;
+            border-radius: 10px;
             overflow: hidden;
         }
         
         .auth-tab {
             flex: 1;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             background: #4d3629;
             cursor: pointer;
             color: #d9b596;
+            font-weight: 500;
         }
         
         .auth-tab.active {
@@ -248,13 +261,13 @@
         }
         
         .otp-input {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             text-align: center;
             font-size: 1.2rem;
             background: #4d3629;
             border: 2px solid #5d443f;
-            border-radius: 5px;
+            border-radius: 10px;
             color: #e0d6c8;
         }
         
@@ -279,22 +292,88 @@
             line-height: 1.5;
         }
         
-        @media (max-width: 768px) {
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .header {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-            
-            .auth-links {
-                flex-direction: column;
-                gap: 10px;
-                align-items: center;
-            }
+        .footer-nav {
+            display: flex;
+            justify-content: space-around;
+            background: #4d3629;
+            padding: 15px;
+            border-top: 1px solid #5d443f;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #a9927e;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+        
+        .nav-item.active {
+            color: #e2a861;
+        }
+        
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e2a861;
+            color: #3e2b28;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .nav-item-wrapper {
+            position: relative;
+        }
+        
+        .back-button {
+            background: none;
+            border: none;
+            color: #d9b596;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .view-title {
+            text-align: center;
+            color: #e2a861;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        /* Animation for view transitions */
+        .view-enter {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        
+        .view-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 300ms, transform 300ms;
+        }
+        
+        .view-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .view-exit-active {
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: opacity 300ms, transform 300ms;
         }
     </style>
 </head>
@@ -302,26 +381,93 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
 
         // Header Component
-        function Header() {
+        function Header({ currentView, onBack, showBack }) {
+            const [currentTime, setCurrentTime] = useState("9:41");
+            
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    const now = new Date();
+                    setCurrentTime(`${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`);
+                }, 1000);
+                
+                return () => clearInterval(interval);
+            }, []);
+            
             return (
                 <div className="header">
-                    <div className="time">9:41</div>
+                    {showBack ? (
+                        <button className="back-button" onClick={onBack}>
+                            <i className="fas fa-arrow-left"></i>
+                        </button>
+                    ) : (
+                        <div className="time">{currentTime}</div>
+                    )}
                     <div className="app-name">ATALAPP</div>
-                    <div className="placeholder"></div>
+                    <div className="header-icon">
+                        <i className="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            );
+        }
+
+        // Footer Navigation Component
+        function FooterNav({ currentView, onChangeView }) {
+            return (
+                <div className="footer-nav">
+                    <div className="nav-item-wrapper">
+                        <a href="#" className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
+                           onClick={(e) => { e.preventDefault(); onChangeView('dashboard'); }}>
+                            <div className="nav-icon">
+                                <i className="fas fa-home"></i>
+                            </div>
+                            <span>Home</span>
+                        </a>
+                    </div>
+                    
+                    <div className="nav-item-wrapper">
+                        <a href="#" className={`nav-item ${currentView === 'alerts' ? 'active' : ''}`}
+                           onClick={(e) => { e.preventDefault(); onChangeView('alerts'); }}>
+                            <div className="nav-icon">
+                                <i className="fas fa-bell"></i>
+                                <div className="notification-badge">3</div>
+                            </div>
+                            <span>Alerts</span>
+                        </a>
+                    </div>
+                    
+                    <div className="nav-item-wrapper">
+                        <a href="#" className={`nav-item ${currentView === 'profile' ? 'active' : ''}`}
+                           onClick={(e) => { e.preventDefault(); onChangeView('profile'); }}>
+                            <div className="nav-icon">
+                                <i className="fas fa-user"></i>
+                            </div>
+                            <span>Profile</span>
+                        </a>
+                    </div>
+                    
+                    <div className="nav-item-wrapper">
+                        <a href="#" className={`nav-item ${currentView === 'settings' ? 'active' : ''}`}
+                           onClick={(e) => { e.preventDefault(); onChangeView('settings'); }}>
+                            <div className="nav-icon">
+                                <i className="fas fa-cog"></i>
+                            </div>
+                            <span>Settings</span>
+                        </a>
+                    </div>
                 </div>
             );
         }
 
         // Alert Card Component
-        function AlertCard() {
+        function AlertCard({ onAcknowledge }) {
             const [acknowledged, setAcknowledged] = useState(false);
             
             const handleAcknowledge = () => {
                 setAcknowledged(true);
-                alert('Alert acknowledged! Proceed to Safe Zone Charlie.');
+                onAcknowledge();
             };
             
             return (
@@ -606,17 +752,140 @@
             );
         }
 
+        // Dashboard View Component
+        function DashboardView() {
+            return (
+                <div className="view-container">
+                    <h2 className="view-title">Emergency Dashboard</h2>
+                    <AlertCard onAcknowledge={() => alert('Alert acknowledged! Proceed to Safe Zone Charlie.')} />
+                    <div className="card">
+                        <div className="card-header">
+                            Emergency Contacts
+                        </div>
+                        <div className="card-body">
+                            <p><strong>Safety Officer:</strong> John Smith - 555-1234</p>
+                            <p><strong>Supervisor:</strong> Jane Doe - 555-5678</p>
+                            <p><strong>Medical Emergency:</strong> 555-911</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Alerts View Component
+        function AlertsView() {
+            return (
+                <div className="view-container">
+                    <h2 className="view-title">Emergency Alerts</h2>
+                    <AlertCard onAcknowledge={() => alert('Alert acknowledged!')} />
+                    <div className="card">
+                        <div className="card-header">
+                            Previous Alerts
+                        </div>
+                        <div className="card-body">
+                            <p><strong>Drill Completed:</strong> Fire Evacuation Drill - Oct 15, 2023</p>
+                            <p><strong>System Test:</strong> Alert System Test - Oct 10, 2023</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Profile View Component
+        function ProfileView() {
+            return (
+                <div className="view-container">
+                    <h2 className="view-title">User Profile</h2>
+                    <SignInCard />
+                </div>
+            );
+        }
+
+        // Settings View Component
+        function SettingsView() {
+            return (
+                <div className="view-container">
+                    <h2 className="view-title">App Settings</h2>
+                    <div className="card">
+                        <div className="card-header">
+                            Notification Settings
+                        </div>
+                        <div className="card-body">
+                            <div className="form-group checkbox-group">
+                                <input type="checkbox" id="emergency-alerts" defaultChecked />
+                                <label htmlFor="emergency-alerts">Emergency Alerts</label>
+                            </div>
+                            <div className="form-group checkbox-group">
+                                <input type="checkbox" id="drill-notifications" defaultChecked />
+                                <label htmlFor="drill-notifications">Drill Notifications</label>
+                            </div>
+                            <div className="form-group checkbox-group">
+                                <input type="checkbox" id="system-updates" />
+                                <label htmlFor="system-updates">System Updates</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card">
+                        <div className="card-header">
+                            Account Management
+                        </div>
+                        <div className="card-body">
+                            <button className="btn btn-primary">Change Password</button>
+                            <button className="btn btn-danger">Log Out</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         // Main App Component
         function App() {
+            const [currentView, setCurrentView] = useState('dashboard');
+            const [viewHistory, setViewHistory] = useState(['dashboard']);
+            
+            const changeView = (newView) => {
+                setViewHistory([...viewHistory, newView]);
+                setCurrentView(newView);
+            };
+            
+            const goBack = () => {
+                if (viewHistory.length > 1) {
+                    const newHistory = [...viewHistory];
+                    newHistory.pop();
+                    setViewHistory(newHistory);
+                    setCurrentView(newHistory[newHistory.length - 1]);
+                }
+            };
+            
+            const showBackButton = viewHistory.length > 1;
+            
+            const renderView = () => {
+                switch (currentView) {
+                    case 'dashboard':
+                        return <DashboardView />;
+                    case 'alerts':
+                        return <AlertsView />;
+                    case 'profile':
+                        return <ProfileView />;
+                    case 'settings':
+                        return <SettingsView />;
+                    default:
+                        return <DashboardView />;
+                }
+            };
+            
             return (
-                <div className="container">
-                    <Header />
-                    <div className="cards-container">
-                        <AlertCard />
-                        <SignUpCard />
-                        <SignInCard />
-                        <VerifyCodeCard />
-                    </div>
+                <div className="app-container">
+                    <Header 
+                        currentView={currentView} 
+                        onBack={goBack}
+                        showBack={showBackButton}
+                    />
+                    {renderView()}
+                    <FooterNav 
+                        currentView={currentView} 
+                        onChangeView={changeView}
+                    />
                 </div>
             );
         }
