@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATALAPP Emergency System</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #2a1e1c;
+            color: #e0d6c8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        #root {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #3e2b28;
+            color: #d9b596;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid #5d443f;
+        }
+        
+        .time {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .app-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #d9b596;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: #3e2b28;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #5d443f;
+        }
+        
+        .card-header {
+            background: #4d3629;
+            color: #d9b596;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 1px solid #5d443f;
+        }
+        
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .alert-card .card-header {
+            background: #5d3c2a;
+            color: #e2a861;
+        }
+        
+        .alert-content {
+            background: #3e2b28;
+            border-left: 5px solid #e2a861;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            color: #e0d6c8;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        label {
+            font-weight: 500;
+            color: #d9b596;
+            font-size: 0.9rem;
+        }
+        
+        input {
+            padding: 12px;
+            background: #4d3629;
+            border: 1px solid #5d443f;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #e0d6c8;
+        }
+        
+        input::placeholder {
+            color: #a9927e;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #e2a861;
+        }
+        
+        .phone-input {
+            display: flex;
+        }
+        
+        .phone-prefix {
+            padding: 12px;
+            background: #4d3629;
+            border: 1px solid #5d443f;
+            border-right: none;
+            border-radius: 5px 0 0 5px;
+            color: #d9b596;
+        }
+        
+        .phone-input input {
+            border-radius: 0 5px 5px 0;
+            flex-grow: 1;
+        }
+        
+        .checkbox-group {
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+        }
+        
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background: #e2a861;
+            color: #3e2b28;
+        }
+        
+        .btn-primary:hover {
+            background: #d99a52;
+        }
+        
+        .btn-danger {
+            background: #8c4c3e;
+        }
+        
+        .btn-danger:hover {
+            background: #7a4135;
+        }
+        
+        .auth-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .auth-link {
+            color: #e2a861;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            background: #4d3629;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #4d3629;
+            cursor: pointer;
+            color: #d9b596;
+        }
+        
+        .auth-tab.active {
+            background: #e2a861;
+            color: #3e2b28;
+        }
+        
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .otp-input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 1.2rem;
+            background: #4d3629;
+            border: 2px solid #5d443f;
+            border-radius: 5px;
+            color: #e0d6c8;
+        }
+        
+        .otp-input:focus {
+            border-color: #e2a861;
+            outline: none;
+        }
+        
+        .resend-link {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        h3 {
+            color: #e2a861;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .auth-links {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Header Component
+        function Header() {
+            return (
+                <div className="header">
+                    <div className="time">9:41</div>
+                    <div className="app-name">ATALAPP</div>
+                    <div className="placeholder"></div>
+                </div>
+            );
+        }
+
+        // Alert Card Component
+        function AlertCard() {
+            const [acknowledged, setAcknowledged] = useState(false);
+            
+            const handleAcknowledge = () => {
+                setAcknowledged(true);
+                alert('Alert acknowledged! Proceed to Safe Zone Charlie.');
+            };
+            
+            return (
+                <div className="card alert-card">
+                    <div className="card-header">
+                        DASHBOARD ALERT
+                    </div>
+                    <div className="card-body">
+                        <h3>SYSTEM ALERT</h3>
+                        <div className="alert-content">
+                            <p>Please initiate immediate evacuation. Your primary route is to proceed to Safe Zone Charlie by following the blue marked path, which is also indicated on the new dashboard from the Pt Controller's Office.</p>
+                            <p>Upon arrival at the safe zone, you must use your personal safety beacon to confirm your location and report your presence to your supervisor or the on-site safety officer.</p>
+                            <p>Additionally, if you encounter any colleagues during evacuation, please instruct them to follow the same route and activate an emergency breathing apparatus as the air quality sensors have noted a potential change.</p>
+                            <p>It is crucial to prioritize your safety and remain calm throughout the process.</p>
+                        </div>
+                        <button 
+                            className={`btn ${acknowledged ? 'btn-primary' : 'btn-danger'}`}
+                            onClick={handleAcknowledge}
+                        >
+                            {acknowledged ? 'Alert Acknowledged' : 'Acknowledge Alert'}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Sign Up Card Component
+        function SignUpCard() {
+            const [formData, setFormData] = useState({
+                username: '',
+                phone: '',
+                pitNumber: '',
+                agreedToTerms: false
+            });
+            
+            const handleChange = (e) => {
+                const { name, value, type, checked } = e.target;
+                setFormData(prev => ({
+                    ...prev,
+                    [name]: type === 'checkbox' ? checked : value
+                }));
+            };
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!formData.agreedToTerms) {
+                    alert('Please agree to the Terms & Conditions and Privacy Policy');
+                    return;
+                }
+                alert(`Sign up successful!\nUsername: ${formData.username}\nPhone: ${formData.phone}\nPit Number: ${formData.pitNumber}`);
+            };
+            
+            return (
+                <div className="card">
+                    <div className="card-header">
+                        Sign Up
+                    </div>
+                    <div className="card-body">
+                        <form className="auth-form" onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="username">Username</label>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username"
+                                    placeholder="Enter Username" 
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="phone">Phone Number</label>
+                                <div className="phone-input">
+                                    <div className="phone-prefix">+91</div>
+                                    <input 
+                                        type="tel" 
+                                        id="phone" 
+                                        name="phone"
+                                        placeholder="Enter Phone Number" 
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="pitNumber">Pit Number</label>
+                                <input 
+                                    type="text" 
+                                    id="pitNumber" 
+                                    name="pitNumber"
+                                    placeholder="Enter Pit Number" 
+                                    value={formData.pitNumber}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            
+                            <div className="form-group checkbox-group">
+                                <input 
+                                    type="checkbox" 
+                                    id="terms" 
+                                    name="agreedToTerms"
+                                    checked={formData.agreedToTerms}
+                                    onChange={handleChange}
+                                />
+                                <label htmlFor="terms">I agree to the Terms & Conditions and Privacy Policy.</label>
+                            </div>
+                            
+                            <button type="submit" className="btn btn-primary">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // Sign In Card Component
+        function SignInCard() {
+            const [activeTab, setActiveTab] = useState('signin');
+            const [formData, setFormData] = useState({
+                username: 'John Doe',
+                pitNumber: '',
+                rememberMe: false
+            });
+            
+            const handleChange = (e) => {
+                const { name, value, type, checked } = e.target;
+                setFormData(prev => ({
+                    ...prev,
+                    [name]: type === 'checkbox' ? checked : value
+                }));
+            };
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                alert(`Sign in successful!\nUsername: ${formData.username}\nPit Number: ${formData.pitNumber}`);
+            };
+            
+            return (
+                <div className="card">
+                    <div className="card-header">
+                        Welcome Back!
+                    </div>
+                    <div className="card-body">
+                        <div className="auth-tabs">
+                            <div 
+                                className={`auth-tab ${activeTab === 'signup' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('signup')}
+                            >
+                                Sign Up
+                            </div>
+                            <div 
+                                className={`auth-tab ${activeTab === 'signin' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('signin')}
+                            >
+                                Sign In
+                            </div>
+                        </div>
+                        
+                        <form className="auth-form" onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="signin-username">Username</label>
+                                <input 
+                                    type="text" 
+                                    id="signin-username" 
+                                    name="username"
+                                    placeholder="John Doe" 
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="signin-pit">Pit Number</label>
+                                <input 
+                                    type="text" 
+                                    id="signin-pit" 
+                                    name="pitNumber"
+                                    placeholder="Enter Pit Number" 
+                                    value={formData.pitNumber}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            
+                            <div className="form-group checkbox-group">
+                                <input 
+                                    type="checkbox" 
+                                    id="remember" 
+                                    name="rememberMe"
+                                    checked={formData.rememberMe}
+                                    onChange={handleChange}
+                                />
+                                <label htmlFor="remember">Remember me</label>
+                            </div>
+                            
+                            <button type="submit" className="btn btn-primary">Sign In</button>
+                            
+                            <div className="auth-links">
+                                <a href="#" className="auth-link">Forgot Details?</a>
+                                <a href="#" className="auth-link">Don't have an account? Sign Up</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // Verify Code Card Component
+        function VerifyCodeCard() {
+            const [otp, setOtp] = useState(['', '', '', '', '', '']);
+            
+            const handleOtpChange = (index, value) => {
+                if (!/^\d*$/.test(value)) return; // Only allow numbers
+                
+                const newOtp = [...otp];
+                newOtp[index] = value;
+                setOtp(newOtp);
+                
+                // Auto focus to next input
+                if (value && index < 5) {
+                    document.getElementById(`otp-${index+1}`).focus();
+                }
+            };
+            
+            const handleKeyDown = (index, e) => {
+                if (e.key === 'Backspace' && !otp[index] && index > 0) {
+                    document.getElementById(`otp-${index-1}`).focus();
+                }
+            };
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                const code = otp.join('');
+                if (code.length !== 6) {
+                    alert('Please enter a complete 6-digit code');
+                    return;
+                }
+                alert(`Verification successful!\nCode: ${code}`);
+            };
+            
+            return (
+                <div className="card">
+                    <div className="card-header">
+                        Verify Code
+                    </div>
+                    <div className="card-body">
+                        <form className="auth-form" onSubmit={handleSubmit}>
+                            <p>Enter the verification code sent to your phone</p>
+                            
+                            <div className="otp-container">
+                                {otp.map((digit, index) => (
+                                    <input
+                                        key={index}
+                                        id={`otp-${index}`}
+                                        type="text"
+                                        className="otp-input"
+                                        maxLength="1"
+                                        value={digit}
+                                        onChange={(e) => handleOtpChange(index, e.target.value)}
+                                        onKeyDown={(e) => handleKeyDown(index, e)}
+                                    />
+                                ))}
+                            </div>
+                            
+                            <div className="resend-link">
+                                <a href="#" className="auth-link">Didn't receive OTP? Resend code</a>
+                            </div>
+                            
+                            <button type="submit" className="btn btn-primary">Verify</button>
+                            
+                            <div className="auth-links">
+                                <a href="#" className="auth-link">Don't have an account? Sign Up</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            return (
+                <div className="container">
+                    <Header />
+                    <div className="cards-container">
+                        <AlertCard />
+                        <SignUpCard />
+                        <SignInCard />
+                        <VerifyCodeCard />
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
